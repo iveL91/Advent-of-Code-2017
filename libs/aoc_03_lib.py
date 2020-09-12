@@ -3,7 +3,7 @@
 import copy
 import itertools
 from math import sqrt
-from typing import List
+from typing import Callable, Dict, List
 
 
 def data_input(filename: str) -> int:
@@ -13,74 +13,65 @@ def data_input(filename: str) -> int:
 
 
 def layer(point: int) -> int:
-    """Calculating Layer"""
-    lyr: int = 0
-    if int(sqrt(point)) % 2 == 0:
-        lyr = int(sqrt(point)) // 2
-    elif (int(sqrt(point)) % 2 == 1) and (sqrt(point) % 1 > 0):
-        lyr = (int(sqrt(point)) + 1) // 2
-    elif (int(sqrt(point)) % 2 == 1) and (sqrt(point) % 1 == 0):
-        lyr = (int(sqrt(point))-1) // 2
-    return lyr
-
-
-def calc_way_length(point: int) -> int:
-    """Calculating length to CENTER"""
-    layer_point: int = layer(point)
-    if layer_point == 0:
-        way_length: int = 0
+    if not int(sqrt(point)) % 2:
+        return int(sqrt(point)) // 2
+    elif sqrt(point) % 1:
+        return (int(sqrt(point)) + 1) // 2
     else:
-        way_length: int = layer_point + abs(((point - (2*layer_point-1)**2) % (2*layer_point)) - layer_point)
-    return way_length
+        return (int(sqrt(point)) - 1) // 2
+
+
+def way_length(point: int) -> int:
+    layer_point: int = layer(point)
+    return layer_point + abs(((point - (2*layer_point-1)**2) % (2*layer_point)) - layer_point) if layer_point else 0
 
 
 def part_1(data: int) -> int:
-    """"""
-    return calc_way_length(data)
+    return way_length(data)
 
 
-def sum_adjecent(grid: List[List[int]], x: int, y: int) -> int:
-    """Sum of the adjecent squares (Input: x,y-coordinates, Output: Sum)"""
-    sm: int = -grid[x][y]
-    for i, j in itertools.product(range(3), range(3)):
-        sm += grid[x-1+i][y+1-j]
-    return sm
+class Grid2D:
+    def __init__(self, grid_size: int) -> None:
+        self.grid_size = grid_size
+        self.diameter: int = grid_size // 2
+        self.center: int = grid_size // 2
+        self.grid: List[List[int]] = [
+            [0 for _ in range(grid_size)] for _ in range(grid_size)]
+        self.grid[self.center][self.center] = 1
+        self.outside: bool = False
+        self.first_outside: int = 0
+
+    def sum_adjecent(self, x: int, y: int) -> int:
+        return -self.grid[x][y] + sum(self.grid[x-1+i][y+1-j] for i, j in itertools.product(range(3), range(3)))
+
+    def is_outside(self, data: int, sum_adj: int) -> None:
+        if sum_adj > data and not self.outside:
+            self.outside = True
+            self.first_outside = copy.copy(sum_adj)
+
+    def step(self, data: int, x, y) -> None:
+        sum_adj = self.sum_adjecent(x, y)
+        self.grid[x][y] = sum_adj
+        self.is_outside(data, sum_adj)
+
+    def side(self, data, lyr, direction):
+        if not self.outside:
+            for i in range(2 * lyr):
+                if self.outside:
+                    break
+                else:
+                    self.step(data, *direction(i))
 
 
 def part_2(data: int) -> int:
     """"""
-    grid_size: int = 13
-    diameter: int = grid_size // 2
-    center: int = grid_size // 2
+    grid2d = Grid2D(13)
+    layer_directions: Callable = lambda lyr: {"east": lambda i: (grid2d.center + lyr, grid2d.center - lyr + 1 + i),
+                                           "north": lambda i: (grid2d.center + lyr - i - 1, grid2d.center + lyr),
+                                           "west": lambda i: (grid2d.center - lyr, grid2d.center + lyr - 1 - i),
+                                           "south": lambda i: (grid2d.center - lyr + 1 + i, grid2d.center - lyr)}
 
-    grid: List[List[int]] = [[0 for _ in range(grid_size)] for _ in range(grid_size)]
-
-    value: bool = False
-    first_outside: int = 0
-    grid[center][center] = 1
-    for lyr in range(1, diameter - 1):
-        for i in range(2 * lyr):
-            sum_adj = sum_adjecent(grid, center + lyr, center - lyr + 1 + i)
-            grid[center + lyr][center - lyr + 1 + i] = sum_adj
-            if sum_adj > data and not value:
-                first_outside = copy.copy(sum_adj)
-                value = True
-        for i in range(2 * lyr):
-            sum_adj = sum_adjecent(grid, center + lyr - i - 1, center + lyr)
-            grid[center + lyr - 1 - i][center + lyr] = sum_adj
-            if sum_adj > data and not value:
-                first_outside = copy.copy(sum_adj)
-                value = True
-        for i in range(2 * lyr):
-            sum_adj = sum_adjecent(grid, center - lyr, center + lyr - 1 - i)
-            grid[center - lyr][center + lyr - 1 - i] = sum_adj
-            if sum_adj > data and not value:
-                first_outside = copy.copy(sum_adj)
-                value = True
-        for i in range(2 * lyr):
-            sum_adj = sum_adjecent(grid, center - lyr + 1 + i, center - lyr)
-            grid[center - lyr + 1 + i][center - lyr] = sum_adj
-            if sum_adj > data and not value:
-                first_outside = copy.copy(sum_adj)
-                value = True
-    return first_outside
+    for lyr in range(1, grid2d.diameter - 1):                           
+        for direction in layer_directions(lyr).values():
+            grid2d.side(data, lyr, direction)
+    return grid2d.first_outside
