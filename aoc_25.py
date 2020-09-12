@@ -6,9 +6,14 @@
 from libs.aoc_25_lib import data_input, part_1
 
 
-BEGIN_STATE, STEPS, DCT = data_input("data/aoc_25_data.txt")
-TAPE_LENGTH: int = 10_000_000 - 1
+def main() -> None:
+    begin_state, steps, dct = data_input("data/aoc_25_data.txt")
+    tape_length: int = 10_000_000 - 1
 
-# Part 1
-PART_1: int = part_1(BEGIN_STATE, STEPS, DCT, TAPE_LENGTH)
-print(f"Part 1: {PART_1} is {PART_1 == 2725}")
+    # Part 1
+    p_1 = part_1(begin_state, steps, dct, tape_length)
+    print(f"Part 1: {p_1} is {p_1 == 2725}")
+
+
+if __name__ == "__main__":
+    main()

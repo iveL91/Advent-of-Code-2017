@@ -8,13 +8,18 @@ from typing import List
 from libs.aoc_22_lib import data_input, part_1, part_2
 
 
-START_FIELD, START_POSITION = data_input("data/aoc_22_data.txt")
-START_ORIENT: List[int] = [-1, 0]
+def main() -> None:
+    start_field, start_position = data_input("data/aoc_22_data.txt")
+    start_orientation: List[int] = [-1, 0]
 
-# Part 1
-PART_1: int = part_1(copy.deepcopy(START_FIELD), START_POSITION, START_ORIENT)
-print(f"Part 1: {PART_1} is {PART_1 == 5266}")
+    # Part 1
+    p_1 = part_1(copy.deepcopy(start_field), start_position, start_orientation)
+    print(f"Part 1: {p_1} is {p_1 == 5266}")
 
-# Part 2
-PART_2: int = part_2(START_FIELD, START_POSITION, START_ORIENT)
-print(f"Part 2: {PART_2} is {PART_2 == 2511895}")
+    # Part 2
+    p_2 = part_2(start_field, start_position, start_orientation)
+    print(f"Part 2: {p_2} is {p_2 == 2511895}")
+
+
+if __name__ == "__main__":
+    main()
