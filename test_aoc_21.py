@@ -9,7 +9,7 @@ class TestAoC21(unittest.TestCase):
 
     def test_part_1(self):
         """"""
-        data: list = data_input("data/aoc_21_data_test.txt")
+        data = data_input("data/aoc_21_data_test.txt")
         self.assertEqual(part_1(data, 2), 12)
 
 
