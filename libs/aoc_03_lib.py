@@ -4,6 +4,7 @@ import copy
 import itertools
 from math import sqrt
 from typing import Callable, Dict, List
+from libs.timer import timer
 
 
 def data_input(filename: str) -> int:
@@ -26,6 +27,7 @@ def way_length(point: int) -> int:
     return layer_point + abs(((point - (2*layer_point-1)**2) % (2*layer_point)) - layer_point) if layer_point else 0
 
 
+@timer
 def part_1(data: int) -> int:
     return way_length(data)
 
@@ -63,15 +65,16 @@ class Grid2D:
                     self.step(data, *direction(i))
 
 
+@timer
 def part_2(data: int) -> int:
     """"""
     grid2d = Grid2D(13)
     layer_directions: Callable = lambda lyr: {"east": lambda i: (grid2d.center + lyr, grid2d.center - lyr + 1 + i),
-                                           "north": lambda i: (grid2d.center + lyr - i - 1, grid2d.center + lyr),
-                                           "west": lambda i: (grid2d.center - lyr, grid2d.center + lyr - 1 - i),
-                                           "south": lambda i: (grid2d.center - lyr + 1 + i, grid2d.center - lyr)}
+                                              "north": lambda i: (grid2d.center + lyr - i - 1, grid2d.center + lyr),
+                                              "west": lambda i: (grid2d.center - lyr, grid2d.center + lyr - 1 - i),
+                                              "south": lambda i: (grid2d.center - lyr + 1 + i, grid2d.center - lyr)}
 
-    for lyr in range(1, grid2d.diameter - 1):                           
+    for lyr in range(1, grid2d.diameter - 1):
         for direction in layer_directions(lyr).values():
             grid2d.side(data, lyr, direction)
     return grid2d.first_outside

@@ -3,6 +3,21 @@
 import re
 import copy
 from typing import List, Match, Optional, Pattern, Tuple
+from libs.timer import timer
+
+
+def data_input(filename: str) -> List[Tuple[int, int]]:
+    """"""
+    with open(filename) as f:
+        data: List[str] = f.read().split("\n")
+        rest_lst: List[Tuple[int, int]] = []
+
+        for component in data:
+            pattern: Pattern = re.compile(r"(\d+)\/(\d+)")
+            match: Optional[Match] = re.search(pattern, component)
+            rest_lst.append((int(match.group(1)), int(match.group(2))))
+
+        return rest_lst
 
 
 def bridge(rest_lst: List[Tuple[int, int]], used_lst: List[Tuple[int, int]], end_port: int, strength: int, strength_lst: List[int], length_lst: List[int]) -> Tuple[List[int], List[int]]:
@@ -22,26 +37,13 @@ def bridge(rest_lst: List[Tuple[int, int]], used_lst: List[Tuple[int, int]], end
             else:
                 new_end_port = component[0]
 
-            strength_lst, length_lst = bridge(new_rest_lst, new_used_lst, new_end_port, new_strength, strength_lst, length_lst)
+            strength_lst, length_lst = bridge(
+                new_rest_lst, new_used_lst, new_end_port, new_strength, strength_lst, length_lst)
 
     strength_lst.append(strength)
     length_lst.append(len(used_lst))
 
     return strength_lst, length_lst
-
-
-def data_input(filename: str) -> List[Tuple[int, int]]:
-    """"""
-    with open(filename) as f:
-        data: List[str] = f.read().split("\n")
-        rest_lst: List[Tuple[int, int]] = []
-
-        for component in data:
-            pattern: Pattern = re.compile(r"(\d+)\/(\d+)")
-            match: Optional[Match] = re.search(pattern, component)
-            rest_lst.append((int(match.group(1)), int(match.group(2))))
-
-        return rest_lst
 
 
 def constructor(rest_lst: List[Tuple[int, int]]) -> Tuple[int, int]:
@@ -54,16 +56,19 @@ def constructor(rest_lst: List[Tuple[int, int]]) -> Tuple[int, int]:
 
     strength_lst, length_lst = bridge(rest_lst, used_lst, end_port, strength, strength_lst,
                                       length_lst)
-    length_strength_lst: List[Tuple[int, int]] = sorted(list(zip(length_lst, strength_lst)))
+    length_strength_lst: List[Tuple[int, int]] = sorted(
+        list(zip(length_lst, strength_lst)))
 
     return max(strength_lst), length_strength_lst[-1][1]
 
 
+@timer
 def part_1(rest_lst: List[Tuple[int, int]]) -> int:
     """"""
     return constructor(rest_lst)[0]
 
 
+@timer
 def part_2(rest_lst: List[Tuple[int, int]]) -> int:
     """"""
     return constructor(rest_lst)[1]

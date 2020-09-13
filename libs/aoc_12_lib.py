@@ -2,6 +2,7 @@
 
 import re
 from typing import Dict, List, Pattern, Set, Tuple
+from libs.timer import timer
 
 
 def data_input(filename: str) -> str:
@@ -40,11 +41,13 @@ def construction(data: str) -> Dict[int, Set[int]]:
     return containing_id_dict
 
 
+@timer
 def part_1(data: str) -> int:
     """"""
     return len(construction(data)[0])
 
 
+@timer
 def part_2(data: str) -> int:
     """"""
     return len(construction(data))

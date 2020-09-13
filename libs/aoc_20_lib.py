@@ -2,6 +2,7 @@
 
 import re
 from typing import List, Match, Pattern
+from libs.timer import timer
 
 
 class Particle:
@@ -9,7 +10,8 @@ class Particle:
 
     def __init__(self, string, index: int) -> None:
         """"""
-        pattern = re.compile(r"p=<(-?\d+),(-?\d+),(-?\d+)>, v=<(-?\d+),(-?\d+),(-?\d+)>, a=<(-?\d+),(-?\d+),(-?\d+)>")
+        pattern = re.compile(
+            r"p=<(-?\d+),(-?\d+),(-?\d+)>, v=<(-?\d+),(-?\d+),(-?\d+)>, a=<(-?\d+),(-?\d+),(-?\d+)>")
         matches = pattern.search(string)
         self.index: int = index
         self.pos = [int(matches.group(i)) for i in range(1, 4)]
@@ -38,13 +40,15 @@ def data_input(filename: str) -> List[Particle]:
         return [Particle(datastring, index) for index, datastring in enumerate(f.read().split("\n"))]
 
 
+@timer
 def part_1(particles: List[Particle]) -> int:
     """"""
     acc_min: int = 0
     acc_min_list: List[Particle] = []
 
     for particle in particles:
-        acc_sum = abs(particle.acc[0]) + abs(particle.acc[1]) + abs(particle.acc[2])
+        acc_sum = abs(particle.acc[0]) + \
+            abs(particle.acc[1]) + abs(particle.acc[2])
         if acc_min > acc_sum or not particle.index:
             acc_min = acc_sum
             acc_min_list = [particle]
@@ -55,7 +59,8 @@ def part_1(particles: List[Particle]) -> int:
     vel_min_list: List[Particle] = []
 
     for particle in acc_min_list:
-        vel_sum = abs(particle.vel[0]) + abs(particle.vel[1]) + abs(particle.vel[2])
+        vel_sum = abs(particle.vel[0]) + \
+            abs(particle.vel[1]) + abs(particle.vel[2])
         if vel_min > vel_sum or particle.index == min(
                 [particle.index for particle in acc_min_list]):
             vel_min = vel_sum
@@ -66,6 +71,7 @@ def part_1(particles: List[Particle]) -> int:
     return vel_min_list[0].index
 
 
+@timer
 def part_2(particles: List[Particle]) -> int:
     """"""
     new_particles: List[Particle] = []

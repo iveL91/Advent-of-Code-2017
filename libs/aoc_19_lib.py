@@ -1,8 +1,13 @@
 """aoc_19_lib"""
 
-import itertools
-from operator import add
 from typing import List, Tuple
+from libs.timer import timer
+
+
+def data_input(filename: str) -> List[str]:
+    """"""
+    with open(filename) as f:
+        return f.read().split("\n")
 
 
 class Network:
@@ -20,15 +25,16 @@ class Network:
         return self.field[self.position[0]][self.position[1]]
 
     @staticmethod
-    def list_add(list_1: list, list_2: list) -> list:
+    def list_add(list_1: List[int], list_2: List[int]) -> List[int]:
         return [element_1 + element_2 for element_1, element_2 in zip(list_1, list_2)]
 
     def direction_change(self) -> None:
         """"""
-        if self.direction[0] != 0:  # Up or down
-            if self.position[1] != 0:
+        if self.direction[0]:  # Up or down
+            if self.position[1]:
                 try:
-                    left_neighbor = self.field[self.position[0]][self.position[1] - 1]
+                    left_neighbor = self.field[self.position[0]
+                                               ][self.position[1] - 1]
                 except IndexError:
                     left_neighbor = " "
                 if left_neighbor != " ":
@@ -38,9 +44,10 @@ class Network:
             else:
                 self.direction = [0, 1]
         else:  # Left or right
-            if self.position[0] != 0:
+            if self.position[0]:
                 try:
-                    upper_neighbor = self.field[self.position[0] - 1][self.position[1]]
+                    upper_neighbor = self.field[self.position[0] -
+                                                1][self.position[1]]
                 except IndexError:
                     upper_neighbor = " "
                 if upper_neighbor != " ":
@@ -64,7 +71,7 @@ def constructor(field: List[str]) -> Tuple[str, int]:
     """"""
     position: List[int] = [0, 0]
     for index, element in enumerate(field[0]):
-        if element != "":
+        if element:
             position[1] = index
 
     direction: List[int] = [1, 0]  # Down, Right
@@ -78,17 +85,13 @@ def constructor(field: List[str]) -> Tuple[str, int]:
     return network.letters_passed[:-1], counter
 
 
-def data_input(filename: str) -> List[str]:
-    """"""
-    with open(filename) as f:
-        return f.read().split("\n")
-
-
+@timer
 def part_1(field: List[str]) -> str:
     """"""
     return constructor(field)[0]
 
 
+@timer
 def part_2(field: List[str]) -> int:
     """"""
     return constructor(field)[1]

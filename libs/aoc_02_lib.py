@@ -2,6 +2,7 @@
 
 import itertools
 from typing import List
+from libs.timer import timer
 
 
 def data_input(filename: str) -> List[List[int]]:
@@ -10,14 +11,16 @@ def data_input(filename: str) -> List[List[int]]:
         return [[int(element) for element in row.split("\t")] for row in f.read().splitlines()]
 
 
+@timer
 def part_1(data: List[List[int]]) -> int:
     """"""
     return sum(max(row) - min(row) for row in data)
 
 
+@timer
 def part_2(data: List[List[int]]) -> int:
     """"""
     return sum(sum(row_i // row_j
-                    for (i, row_i), (j, row_j) in itertools.product(enumerate(row), enumerate(row))
-                    if (row_i % row_j == 0) and (i != j))
-                for row in data)
+                   for (i, row_i), (j, row_j) in itertools.product(enumerate(row), enumerate(row))
+                   if (row_i % row_j == 0) and (i != j))
+               for row in data)

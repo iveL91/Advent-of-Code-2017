@@ -2,6 +2,7 @@
 
 import re
 from typing import Any, Dict, Iterator, List, Pattern, Tuple, Union
+from libs.timer import timer
 
 
 def data_input(filename: str) -> Dict[int, int]:
@@ -37,13 +38,16 @@ def drive_through(dct: Dict[int, int], positions: Dict[int, List[Any]], packet_p
     return severity
 
 
+@timer
 def part_1(data: Dict[int, int]) -> int:
     """"""
     packet_position_delay: int = 0
-    positions: Dict[int, List[Union[int, bool]]] = {key: [1, True] for key in data}
+    positions: Dict[int, List[Union[int, bool]]] = {
+        key: [1, True] for key in data}
     return drive_through(data, positions, packet_position_delay)
 
 
+@timer
 def part_2(data: Dict[int, int]) -> int:
     """"""
     packet_position_delay: int = -1

@@ -2,6 +2,7 @@
 
 import re
 from typing import Generator, List, Pattern, Tuple
+from libs.timer import timer
 
 
 def data_input(filename: str) -> Tuple[int, int]:
@@ -47,6 +48,7 @@ def constructor(starts: Tuple[int, int], factors: Tuple[int, int], divider: int,
     return counter
 
 
+@timer
 def part_1(starts: Tuple[int, int]) -> int:
     """"""
     factors: Tuple[int, int] = (16807, 48271)
@@ -56,6 +58,7 @@ def part_1(starts: Tuple[int, int]) -> int:
     return constructor(starts, factors, divider, mults, number_pairs)
 
 
+@timer
 def part_2(starts: Tuple[int, int]) -> int:
     """"""
     factors: Tuple[int, int] = (16807, 48271)

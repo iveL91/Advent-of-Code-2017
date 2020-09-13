@@ -1,6 +1,7 @@
 """aoc_17_lib"""
 
 from typing import List, Optional, Tuple
+from libs.timer import timer
 
 
 def data_input(filename: str) -> int:
@@ -28,6 +29,7 @@ def after_0(steps: int, position: int, counter: int, after_zero: Optional[int]) 
     return position, counter, after_zero
 
 
+@timer
 def part_1(steps: int) -> int:
     """"""
     rounds: int = 2017
@@ -40,6 +42,7 @@ def part_1(steps: int) -> int:
     return lst[position + 1]
 
 
+@timer
 def part_2(steps: int) -> int:
     """"""
     rounds: int = 50_000_000
@@ -48,6 +51,7 @@ def part_2(steps: int) -> int:
     after_zero: Optional[int] = None
 
     for _ in range(rounds):
-        position, counter, after_zero = after_0(steps, position, counter, after_zero)
+        position, counter, after_zero = after_0(
+            steps, position, counter, after_zero)
 
     return after_zero

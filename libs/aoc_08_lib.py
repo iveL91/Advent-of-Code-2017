@@ -3,6 +3,7 @@
 import operator
 import re
 from typing import Callable, Dict, List, Pattern, Tuple
+from libs.timer import timer
 
 
 def data_input(filename: str) -> str:
@@ -43,11 +44,13 @@ def construction(data: str) -> Tuple[int, int]:
     return max(dct.values()), maximum
 
 
+@timer
 def part_1(data: str) -> int:
     """"""
     return construction(data)[0]
 
 
+@timer
 def part_2(data: str) -> int:
     """"""
     return construction(data)[1]

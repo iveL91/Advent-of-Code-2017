@@ -3,6 +3,7 @@
 import itertools
 import re
 from typing import Any, List, Match, Optional
+from libs.timer import timer
 
 
 class Tower:
@@ -75,12 +76,14 @@ def data_input(filename: str) -> List[str]:
         return f.read().split("\n")
 
 
+@timer
 def part_1(data: List[str]) -> str:
     """"""
     Tower.dataset = data
     return bottom_tower(data).name
 
 
+@timer
 def part_2(data: List[str]) -> int:
     """"""
     Tower.dataset = data

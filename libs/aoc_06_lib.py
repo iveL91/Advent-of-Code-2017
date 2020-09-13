@@ -1,6 +1,7 @@
 """aoc_06_lib"""
 
 from typing import List, Tuple
+from libs.timer import timer
 
 
 def data_input(filename: str) -> List[int]:
@@ -40,11 +41,13 @@ def construction(data: List[int]) -> Tuple[int, int]:
     return counter, len(seqs) - 1 - seqs.index(seq)
 
 
+@timer
 def part_1(data: List[int]) -> int:
     """"""
     return construction(data)[0]
 
 
+@timer
 def part_2(data: List[int]) -> int:
     """"""
     return construction(data)[1]

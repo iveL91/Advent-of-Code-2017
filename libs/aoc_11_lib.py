@@ -1,6 +1,7 @@
 """aoc_11_lib"""
 
 from typing import Dict, List, Tuple
+from libs.timer import timer
 
 
 def data_input(filename: str) -> List[str]:
@@ -37,17 +38,20 @@ def construction(data: List[str]) -> Tuple[int, int]:
         count_dct, coords = direction_counter(string, count_dct, coords)
         x_distance: float = abs(coords[0])
         y_distance: float = abs(coords[1])
-        steps = int(x_distance)  if 2 * y_distance <= x_distance else int(x_distance/2 + y_distance)
+        steps = int(x_distance) if 2 * \
+            y_distance <= x_distance else int(x_distance/2 + y_distance)
         maximum = max(maximum, steps)
 
     return steps, maximum
 
 
+@timer
 def part_1(data: List[str]) -> int:
     """"""
     return construction(data)[0]
 
 
+@timer
 def part_2(data: List[str]) -> int:
     """"""
     return construction(data)[1]

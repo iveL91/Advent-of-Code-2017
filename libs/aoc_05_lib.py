@@ -1,6 +1,7 @@
 """aoc_05_lib"""
 
 from typing import List
+from libs.timer import timer
 
 
 def data_input(filename: str) -> List[int]:
@@ -21,11 +22,13 @@ def func(data: List[int], part: int) -> int:
     return counter
 
 
+@timer
 def part_1(data: List[int]) -> int:
     """"""
     return func(data, 1)
 
 
+@timer
 def part_2(data: List[int]) -> int:
     """"""
     return func(data, 2)

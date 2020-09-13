@@ -1,6 +1,7 @@
 """aoc_09_lib"""
 
 from typing import Tuple
+from libs.timer import timer
 
 
 def data_input(filename: str) -> str:
@@ -39,11 +40,13 @@ def construction(data: str) -> Tuple[int, int]:
     return sm, garbage_counter
 
 
+@timer
 def part_1(data: str) -> int:
     """"""
     return construction(data)[0]
 
 
+@timer
 def part_2(data: str) -> int:
     """"""
     return construction(data)[1]

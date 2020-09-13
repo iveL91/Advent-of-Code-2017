@@ -3,6 +3,7 @@
 import itertools
 from typing import Dict, List, Tuple, Optional
 from libs.hash import knot_hash
+from libs.timer import timer
 
 
 def data_input(filename: str) -> str:
@@ -76,12 +77,14 @@ def construction(data: str, grid_size: int) -> List[str]:
     return [hextobin(know_hash) for know_hash in knot_hashs]
 
 
+@timer
 def part_1(data: str, grid_size: int = 128) -> int:
     """"""
     knot_hashs_binary: List[str] = construction(data, grid_size)
     return sum(knot_hash.count("1") for knot_hash in knot_hashs_binary)
 
 
+@timer
 def part_2(data: str, grid_size: int = 128) -> int:
     """"""
     grid: List[str] = construction(data, grid_size)

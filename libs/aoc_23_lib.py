@@ -2,6 +2,13 @@
 
 import libs.program as program
 from typing import List
+from libs.timer import timer
+
+
+def data_input(filename: str) -> List[List[str]]:
+    """"""
+    with open(filename) as f:
+        return [row.split(" ") for row in f.read().split("\n")]
 
 
 class ExperimentalCoprocessor(program.Program):
@@ -70,12 +77,7 @@ def is_prime(n: int) -> bool:
     return True
 
 
-def data_input(filename: str) -> List[List[str]]:
-    """"""
-    with open(filename) as f:
-        return [row.split(" ") for row in f.read().split("\n")]
-
-
+@timer
 def part_1(instruction_lst: List[List[str]]) -> int:
     """"""
     experimental_coprocessor = ExperimentalCoprocessor(
@@ -90,6 +92,7 @@ def part_1(instruction_lst: List[List[str]]) -> int:
     return mul_counter
 
 
+@timer
 def part_2(instruction_lst: List[List[str]]) -> int:
     """"""
     experimental_coprocessor = ExperimentalCoprocessor(

@@ -2,6 +2,27 @@
 
 import math
 from typing import List, Tuple
+from libs.timer import timer
+
+
+def data_input(filename: str) -> Tuple[List[List[float]], List[int]]:
+    """"""
+    with open(filename) as f:
+        data = f.read().replace("#", "1").replace(".", "0").split("\n")
+
+        field_size: int = 10000 - 1
+        start_field: List[List[float]] = [
+            [0 for _ in range(field_size)] for _ in range(field_size)]
+
+        for i, dataline in enumerate(data):
+            for j, datapoint in enumerate(dataline):
+                x = i + math.ceil(field_size / 2) - math.ceil(len(data) / 2)
+                y = j + math.ceil(field_size / 2) - math.ceil(len(data) / 2)
+                start_field[x][y] = int(datapoint)
+
+        start_position = [
+            math.ceil(field_size / 2) - 1, math.ceil(field_size / 2) - 1]
+        return start_field, start_position
 
 
 class GridComputingCluster:
@@ -27,7 +48,7 @@ class GridComputingCluster:
         """"""
         new_orient = {
             1: [self.orient[1], -self.orient[0]],
-            0: [-self.orient[1], self.orient[0]], 
+            0: [-self.orient[1], self.orient[0]],
             0.5: self.orient,
             1.5: [-self.orient[0], -self.orient[1]]
         }
@@ -51,27 +72,10 @@ class GridComputingCluster:
         self.moving()
 
 
-def data_input(filename: str) -> Tuple[List[List[float]], List[int]]:
-    """"""
-    with open(filename) as f:
-        data = f.read().replace("#", "1").replace(".", "0").split("\n")
-
-        field_size: int = 10000 - 1
-        start_field: List[List[float]] = [[0 for _ in range(field_size)] for _ in range(field_size)]
-
-        for i, dataline in enumerate(data):
-            for j, datapoint in enumerate(dataline):
-                x = i + math.ceil(field_size / 2) - math.ceil(len(data) / 2)
-                y = j + math.ceil(field_size / 2) - math.ceil(len(data) / 2)
-                start_field[x][y] = int(datapoint)
-
-        start_position = [math.ceil(field_size / 2) - 1, math.ceil(field_size / 2) - 1]
-        return start_field, start_position
-
-
 def constructor(start_field: List[List[float]], start_position: List[int], start_orient: List[int], bursts: int, step_length: float):
     """"""
-    grid_computing_cluster = GridComputingCluster(start_field, start_position, start_orient, inf_counter=0, step_length=step_length)
+    grid_computing_cluster = GridComputingCluster(
+        start_field, start_position, start_orient, inf_counter=0, step_length=step_length)
 
     for _ in range(bursts):
         grid_computing_cluster.burst()
@@ -79,11 +83,13 @@ def constructor(start_field: List[List[float]], start_position: List[int], start
     return grid_computing_cluster.inf_counter
 
 
+@timer
 def part_1(start_field: List[List[float]], start_position: List[int], start_orient: List[int]) -> int:
     """"""
     return constructor(start_field, start_position, start_orient, 10_000, 1)
 
 
+@timer
 def part_2(start_field: List[List[float]], start_position: List[int], start_orient: List[int]) -> int:
     """"""
     return constructor(start_field, start_position, start_orient, 10_000_000, 0.5)

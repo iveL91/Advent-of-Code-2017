@@ -2,6 +2,7 @@
 
 from typing import Dict, List
 import libs.program as program
+from libs.timer import timer
 
 
 def data_input(filename: str) -> List[List[str]]:
@@ -68,6 +69,7 @@ class rcvCommand(DuetCommand):
             self.duet.index ^= 1
 
 
+@timer
 def part_1(instruction_lst: List[List[str]]) -> int:
     """"""
     duet = Duet(instruction_lst)
@@ -75,6 +77,7 @@ def part_1(instruction_lst: List[List[str]]) -> int:
     return duet.program.queue[-1]
 
 
+@timer
 def part_2(instruction_lst: List[List[str]]) -> int:
     """"""
     duet = Duet(instruction_lst)

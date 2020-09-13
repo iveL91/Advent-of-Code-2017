@@ -3,7 +3,6 @@
     https://adventofcode.com/2017/day/15
 """
 
-from typing import Tuple
 from libs.aoc_15_lib import data_input, part_1, part_2
 
 

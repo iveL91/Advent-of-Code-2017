@@ -5,6 +5,7 @@ import itertools
 import re
 import numpy as np
 from typing import List, Match, Pattern
+from libs.timer import timer
 
 
 def create_matrix(string: str, reg_ex_raw: str):
@@ -126,7 +127,8 @@ def gluing_vertical2(matrix1, matrix2):
         dim_y: int = dim_y_1
         new_matrix = np.zeros((dim_x, dim_y), dtype=np.dtype(np.int16))
         for x, y in itertools.product(range(dim_x), range(dim_y)):
-            new_matrix[x, y] = matrix1[x, y] if x < dim_x_1 else matrix2[x-dim_x_1, y]
+            new_matrix[x, y] = matrix1[x,
+                                       y] if x < dim_x_1 else matrix2[x-dim_x_1, y]
         return new_matrix
     else:
         return "Different widths!"
@@ -139,7 +141,8 @@ def gluing_vertical(*matrices):
 
 def gluing(list_list_matrices: list):
     """(list -> np.array)"""
-    new_list_matrices = [gluing_horizontal(*list_matrices) for list_matrices in list_list_matrices]
+    new_list_matrices = [gluing_horizontal(
+        *list_matrices) for list_matrices in list_list_matrices]
     return gluing_vertical(*new_list_matrices)
 
 
@@ -180,11 +183,13 @@ def constructor(instructions_in_out: list, rounds: int) -> int:
     return np.count_nonzero(matrix == 1)
 
 
+@timer
 def part_1(instructions_in_out: list, rounds: int = 5) -> int:
     """"""
     return constructor(instructions_in_out, rounds)
 
 
+@timer
 def part_2(instructions_in_out: list) -> int:
     """"""
     rounds: int = 18

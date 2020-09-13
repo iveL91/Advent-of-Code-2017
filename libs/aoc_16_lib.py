@@ -2,6 +2,7 @@
 
 import re
 from typing import List
+from libs.timer import timer
 
 
 class ProgramGroup:
@@ -14,35 +15,37 @@ class ProgramGroup:
     def spin(self, position: int) -> str:
         """"""
         return self.string[-position:] + self.string[:len(self.string)-position]
-    
+
     def exchange(self, position_1: int, position_2: int) -> str:
         """"""
         lst = list(self.string)
         lst[position_1], lst[position_2] = lst[position_2], lst[position_1]
         return "".join(lst)
-    
+
     def partner(self, name_1: str, name_2: str) -> str:
         """"""
         return self.exchange(self.string.index(name_1), self.string.index(name_2))
-    
+
     def movement(self, move: str) -> None:
         """"""
         pattern_spin = re.compile(r"s(\d+)")
         match_spin = re.search(pattern_spin, move)
-    
+
         pattern_exchange = re.compile(r"x(\d+)/(\d+)")
         match_exchange = re.search(pattern_exchange, move)
-    
+
         pattern_partner = re.compile(r"p(\w+)/(\w+)")
         match_partner = re.search(pattern_partner, move)
-    
+
         if match_spin:
             self.string = self.spin(int(match_spin.group(1)))
         elif match_exchange:
-            self.string = self.exchange(int(match_exchange.group(1)), int(match_exchange.group(2)))
+            self.string = self.exchange(
+                int(match_exchange.group(1)), int(match_exchange.group(2)))
         elif match_partner:
-            self.string = self.partner(match_partner.group(1), match_partner.group(2))
-    
+            self.string = self.partner(
+                match_partner.group(1), match_partner.group(2))
+
     def dance(self, moves: List[str]) -> None:
         """"""
         for move in moves:
@@ -53,8 +56,9 @@ def data_input(filename: str) -> List[str]:
     """"""
     with open(filename) as f:
         return f.read().split(",")
-    
 
+
+@timer
 def part_1(data: List[str], start_string: str) -> str:
     """"""
     program_group = ProgramGroup(start_string)
@@ -62,6 +66,7 @@ def part_1(data: List[str], start_string: str) -> str:
     return program_group.string
 
 
+@timer
 def part_2(data: List[str], start_string: str) -> str:
     """"""
     rounds: int = 1_000_000_000

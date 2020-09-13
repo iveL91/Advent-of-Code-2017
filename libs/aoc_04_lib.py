@@ -1,6 +1,7 @@
 """aoc_04_lib"""
 
 from typing import List
+from libs.timer import timer
 
 
 def data_input(filename: str) -> List[List[str]]:
@@ -17,6 +18,7 @@ def func(row: list) -> bool:
     return True
 
 
+@timer
 def part_1(data: List[List[str]]) -> int:
     """"""
     return sum(func(row) for row in data)
@@ -34,6 +36,7 @@ def func2(row: List[str]) -> bool:
     return True
 
 
+@timer
 def part_2(data: List[List[str]]) -> int:
     """"""
     return sum(func2(row) for row in data)
